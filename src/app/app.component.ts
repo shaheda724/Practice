@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,28 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Practice';
+  get userName(){
+    return this.registrationForm.get('userName');
+  }
+
+  constructor(private fb: FormBuilder){}
+
+  registrationForm = this.fb.group({
+    userName : ['',[Validators.required, Validators.minLength(3)]],
+    password:[''],
+    confirmPassword:[''],
+    address: this.fb.group({
+      city:[''],
+      state:[''],
+      postalCode:['']
+    })
+  })
+
+  loadApiData(){
+    this.registrationForm.patchValue({
+      userName : 'Bruce',
+      password : 'test',
+      confirmPassword : 'test',
+    })
+  }
 }
